@@ -3,16 +3,45 @@
 classdef zoidberg
 
 	properties
-		path_to_neuron_model_db = ('/Volumes/Archive1/Prinz/Prinz, Billimoria, Marder (2003)/neuron properties');
+		path_to_neuron_model_db
 		path_to_stg_model_db
 	end
 
 	properties (Access = protected)
 		conductance_multipliers = [1000 25 20 100 50 250 .1 .1];
 		n_neurons = 1679616;
+		zoidberg_folder
 	end
 
 	methods 
+
+		function self = zoidberg()
+
+			% check for paths to model_db
+			self.zoidberg_folder = fileparts(which(mfilename));
+
+			% search this for paths files
+			if exist(joinPath(self.zoidberg_folder,'paths.zoidberg'),'file')
+				load(joinPath(self.zoidberg_folder,'paths.zoidberg'),'-mat')
+				self.path_to_neuron_model_db = path_to_neuron_model_db;
+			else
+				warning('Path to neuron model DB unknown. Configure before using.')
+			end
+		end
+
+		function self =  set.path_to_neuron_model_db(self,value)
+			% check that this exists, and is a folder 
+			assert(isdir(value),'Argument should be a directory')
+			self.path_to_neuron_model_db = value;
+			path_to_neuron_model_db = value;
+			try
+				save(joinPath(self.zoidberg_folder,'paths.zoidberg'),'path_to_neuron_model_db','-append')
+			catch
+				save(joinPath(self.zoidberg_folder,'paths.zoidberg'),'path_to_neuron_model_db')
+			end
+
+		end
+
 		function [G] = findNeurons(self,neuron_type,varargin)
 
 
