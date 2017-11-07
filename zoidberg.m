@@ -108,7 +108,7 @@ classdef zoidberg
 			nmaxmin = nmaxmin(filter_idx);
 			
 
-			disp([mat2str(length(these_models)) ' neurons found'])
+			% disp([mat2str(length(these_models)) ' neurons found'])
 
 			G = self.model_id_2_cond(these_models);
 
