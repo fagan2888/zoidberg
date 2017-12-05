@@ -23,7 +23,12 @@ classdef zoidberg
 			% search this for paths files
 			if exist(joinPath(self.zoidberg_folder,'paths.zoidberg'),'file')
 				load(joinPath(self.zoidberg_folder,'paths.zoidberg'),'-mat')
-				self.path_to_neuron_model_db = path_to_neuron_model_db;
+				if (isdir(path_to_neuron_model_db))
+					self.path_to_neuron_model_db = path_to_neuron_model_db;
+				else
+					warning('The cached path to the STG database was not found. Maybe a drive missing?')
+				end
+				
 			else
 				warning('Path to neuron model DB unknown. Configure before using.')
 			end
