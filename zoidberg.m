@@ -21,8 +21,8 @@ classdef zoidberg
 			self.zoidberg_folder = fileparts(which(mfilename));
 
 			% search this for paths files
-			if exist(joinPath(self.zoidberg_folder,'paths.zoidberg'),'file')
-				load(joinPath(self.zoidberg_folder,'paths.zoidberg'),'-mat')
+			if exist(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'file')
+				load(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'-mat')
 				if (isdir(path_to_neuron_model_db))
 					self.path_to_neuron_model_db = path_to_neuron_model_db;
 				else
@@ -40,9 +40,9 @@ classdef zoidberg
 			self.path_to_neuron_model_db = value;
 			path_to_neuron_model_db = value;
 			try
-				save(joinPath(self.zoidberg_folder,'paths.zoidberg'),'path_to_neuron_model_db','-append')
+				save(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'path_to_neuron_model_db','-append')
 			catch
-				save(joinPath(self.zoidberg_folder,'paths.zoidberg'),'path_to_neuron_model_db')
+				save(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'path_to_neuron_model_db')
 			end
 
 		end
