@@ -15,8 +15,9 @@ if ~exist('z','var')
 
 	x = xolotl;
 
-	x.add('compartment','AB','V',-65,'Ca',0.02,'Cm',10,'A',0.0628,'vol',vol,'phi',phi,'Ca_out',3000,'Ca_in',0.05,'tau_Ca',tau_Ca);
-
+	x.add('compartment','AB','V',-65,'Ca',0.02,'Cm',10,'A',0.0628,'vol',vol,'Ca_out',3000);
+	x.AB.add('CalciumMech1');
+	
 	idx = randi(length(G));
 
 	x.AB.add('prinz/NaV','gbar',G(1,idx),'E',50);
