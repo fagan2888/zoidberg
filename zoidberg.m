@@ -17,20 +17,14 @@ classdef zoidberg
 
 		function self = zoidberg()
 
-			% check for paths to model_db
-			self.zoidberg_folder = fileparts(which(mfilename));
-
-			% search this for paths files
-			if exist(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'file')
-				load(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'-mat')
-				if (isdir(path_to_neuron_model_db))
-					self.path_to_neuron_model_db = path_to_neuron_model_db;
-				else
-					warning('The cached path to the STG database was not found. Maybe a drive missing?')
-				end
-				
-			else
+			if isempty(getpref('zoidberg'))
 				warning('Path to neuron model DB unknown. Configure before using.')
+			else
+				if isempty(getpref('zoidberg','path_to_neuron_model_db'))
+					warning('Path to neuron model DB unknown. Configure before using.')
+				else
+					self.path_to_neuron_model_db = getpref('zoidberg','path_to_neuron_model_db');
+				end
 			end
 		end
 
@@ -39,15 +33,13 @@ classdef zoidberg
 			assert(isdir(value),'Argument should be a directory')
 			self.path_to_neuron_model_db = value;
 			path_to_neuron_model_db = value;
-			try
-				save(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'path_to_neuron_model_db','-append')
-			catch
-				save(joinPath(self.zoidberg_folder,[getComputerName '.zoidberg']),'path_to_neuron_model_db')
-			end
+
+			setpref('zoidberg','path_to_neuron_model_db',value)
+
 
 		end
 
-		function [G] = findNeurons(self,neuron_type,varargin)
+		function G = findNeurons(self,neuron_type,varargin)
 
 
 			% options and defaults
